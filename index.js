@@ -15,7 +15,7 @@ import logger from './middleware/logger.js';
 // import routes
 import userRoutes from './routes/user.js';
 import incomeRoutes from './routes/income.js';
-import expenseRoutes from './routes/expense';
+import expenseRoutes from './routes/expense.js';
 // load environment variables
 dotenv.config();
 const PORT = process.env.PORT || 5003;
