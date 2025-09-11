@@ -27,14 +27,15 @@ const expenseControllers = {
     },
 
     createExpense: async (req, res) => {
-        const { amount, category, description,userId } = req.body;
+        const { amount, category, description, date, userId } = req.body;
         try {
             if (amount && category && description &&userId) {
                 const newExpense = new Expense({
                     amount,
                     category,
                     description,
-                    userId
+                    userId,
+                    ...(date && { date })
         
                 });
                 await newExpense.save();
@@ -50,12 +51,12 @@ const expenseControllers = {
 
     updateExpense: async (req, res) => {
         const { id } = req.params;
-        const { amount, category, description } = req.body;
+        const { amount, category, description, date } = req.body;
         try {
-            if (amount && category&& description) {
+            if (amount && category) {
                 const updatedExpense = await Expense.updateOne(
                     { _id: id },
-                    { amount, category, description }
+                    { amount, category, description, date }
                 );
                 if (updatedExpense.modifiedCount > 0) {
                     res.status(200).json({ message: 'Expense updated successfully' });

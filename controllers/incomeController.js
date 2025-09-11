@@ -32,7 +32,7 @@ const incomeControllers = {
                 const newIncome = new Income({
                     amount,
                     source,
-                    date,
+                    ...(date && { date }),
                     description
                 });
                 await newIncome.save();
