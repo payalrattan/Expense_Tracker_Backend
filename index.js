@@ -16,6 +16,7 @@ import logger from './middleware/logger.js';
 import userRoutes from './routes/user.js';
 import incomeRoutes from './routes/income.js';
 import expenseRoutes from './routes/expense.js';
+import balanceRoutes from './routes/balance.js';
 // load environment variables
 dotenv.config();
 const PORT = process.env.PORT || 5003;
@@ -31,14 +32,15 @@ connectToDB();
 const app = express();
 
 // cors allow the server to accept request from different origin
-const allowedOrigins = process.env.CORS_ORIGINS
-    ? process.env.CORS_ORIGINS.split(',')
-    : ['http://localhost:5173'];
+// const allowedOrigins = process.env.CORS_ORIGINS
+//     : ['http://localhost:5173'];
 
 app.use(
     cors({
-        origin: allowedOrigins,
+        origin: "http://localhost:3000", // allow frontend
+        methods: ["GET", "POST"],
         credentials: true
+
     })
 );
 
@@ -53,12 +55,15 @@ app.use(express.static(path.join(PATH, 'dist')));
 // use middlewares
 if (process.env.NODE_ENV === 'development') {
     app.use(logger);
+
+
 }
 
 // use routes
 app.use('/api', userRoutes);
 app.use('/api', incomeRoutes);
 app.use('/api', expenseRoutes);
+app.use('/api', balanceRoutes);
 
 
 if (process.env.NODE_ENV === 'production') {
