@@ -38,6 +38,17 @@ const incomeControllers = {
             const userIncome = await Income.find({ userId: id });
             if (!userIncome || userIncome.length === 0) {
                 return res.status(404).json({ message: "No income found for this user" });
+            if (amount && source && date && description) {
+                const newIncome = new Income({
+                    amount,
+                    source,
+                    ...(date && { date }),
+                    description
+                });
+                await newIncome.save();
+                res.status(201).json(newIncome);
+            } else {
+                res.status(400).json({ message: 'All fields are required' });
             }
             res.status(200).json(userIncome);
         } catch (err) {
