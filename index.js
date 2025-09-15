@@ -32,17 +32,15 @@ connectToDB();
 const app = express();
 
 // cors allow the server to accept request from different origin
-// const allowedOrigins = process.env.CORS_ORIGINS
-//     : ['http://localhost:5173'];
+const allowedOrigins = process.env.CORS_ORIGINS
+    ? process.env.CORS_ORIGINS.split(',')
+    : ['http://localhost:5173'];
 
-app.use(
-    cors({
+app.use(cors({
         origin: "http://localhost:3000", // allow frontend
-        methods: ["GET", "POST"],
+        methods: ["GET","POST","PUT","DELETE"],
         credentials: true
-
-    })
-);
+    }));
 
 // parses
 app.use(express.json());
@@ -60,10 +58,9 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // use routes
-app.use('/api', userRoutes);
-app.use('/api', incomeRoutes);
-app.use('/api', expenseRoutes);
-app.use('/api', balanceRoutes);
+app.use('/', userRoutes);
+app.use('/', incomeRoutes);
+app.use('/', expenseRoutes);
 
 
 if (process.env.NODE_ENV === 'production') {

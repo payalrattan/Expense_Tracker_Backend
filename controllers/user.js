@@ -85,7 +85,9 @@ const userControllers = {
                     );
 
                     // create cookie
-                    res.cookie('token', token, { httpOnly: true });
+                    res.cookie('token', token, { 
+                        httpOnly: true
+                     });
 
                     res.status(200).json({
                         id: userExist._id,
