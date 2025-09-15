@@ -30,32 +30,23 @@ const incomeControllers = {
         }
     },
 
-    // Get all income records for a specific user
-    //http://localhost:5002/api/income/user/68c32d541328635110e809ac
-    getUserIncome: async (req, res) => {
-        const { id } = req.params;
-        try {
-            const userIncome = await Income.find({ userId: id });
-            if (!userIncome || userIncome.length === 0) {
-                return res.status(404).json({ message: "No income found for this user" });
-            if (amount && source && date && description) {
-                const newIncome = new Income({
-                    amount,
-                    source,
-                    ...(date && { date }),
-                    description
-                });
-                await newIncome.save();
-                res.status(201).json(newIncome);
-            } else {
-                res.status(400).json({ message: 'All fields are required' });
-            }
-            res.status(200).json(userIncome);
-        } catch (err) {
-            console.log(err);
-            res.status(500).json({ message: 'Server Error' });
+   // Get all income records for a specific user
+// http://localhost:5002/api/income/user/:id
+getUserIncome: async (req, res) => {
+    const { id } = req.params; // userId
+    try {
+        const userIncome = await Income.find({ userId: id });
+        
+        if (!userIncome || userIncome.length === 0) {
+            return res.status(404).json({ message: "No income found for this user" });
         }
-    },
+
+        res.status(200).json(userIncome);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Server Error' });
+    }
+},
 
     // Get total income of a user
     //http://localhost:5002/api/income/user/68c32d541328635110e809ac/total
