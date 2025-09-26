@@ -58,7 +58,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // use routes
-app.use('/', userRoutes);
+app.use('/api/users', userRoutes);
 app.use('/', incomeRoutes);
 app.use('/', expenseRoutes);
 
