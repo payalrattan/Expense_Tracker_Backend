@@ -36,39 +36,28 @@ const allowedOrigins = process.env.CORS_ORIGINS
     ? process.env.CORS_ORIGINS.split(',')
     : ['http://localhost:5173'];
 
-app.use(cors({
+app.use(
+    cors({
         origin: "http://localhost:3000", // allow frontend
         methods: ["GET", "POST", "DELETE", "PUT"],
-        credentials: true
-    }));
+        credentials: true,
+    })
+);
 
 // parses
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// serve static files
-app.use(express.static(path.join(PATH, 'dist')));
-
 // use middlewares
 if (process.env.NODE_ENV === 'development') {
     app.use(logger);
-
-
 }
 
 // use routes
 app.use('/api', userRoutes);
 app.use('/api', incomeRoutes);
 app.use('/api', expenseRoutes);
-
-
-
-if (process.env.NODE_ENV === 'production') {
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(PATH, 'dist', 'index.html'));
-    });
-}
 
 // handle 404
 app.use('*', (req, res) => {
