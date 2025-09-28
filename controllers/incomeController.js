@@ -14,19 +14,18 @@ const incomeControllers = {
         }
     },
 
-    // Get a single income by its _id
-    //http://localhost:5002/api/income/68c4095ee94d61d76ff66fcc
+    // ✅ Get a single income by its _id
+    // GET http://localhost:5002/api/income/:id
     getIncomeById: async (req, res) => {
-        const { id } = req.params; // id from URL parameter
+        const { id } = req.params;
         try {
-            const income = await Income.findOne({ _id: id });
-            if (income) {
-                res.status(200).json(income);
-            } else {
-                res.status(404).json({ message: 'Income not found' });
+            const income = await Income.findById(id);
+            if (!income) {
+                return res.status(404).json({ message: 'Income not found' });
             }
+            res.status(200).json(income);
         } catch (err) {
-            console.log(err);
+            console.error(err);
             res.status(500).json({ message: 'Server Error' });
         }
     },
@@ -34,6 +33,7 @@ const incomeControllers = {
     // Get all income records for a specific user
     // http://localhost:5002/api/income/user/:id
     getUserIncome: async (req, res) => {
+        const { id } = req.params; // userId
         const { id } = req.params; // userId
         try {
             const userIncome = await Income.find({ userId: id });
@@ -44,7 +44,7 @@ const incomeControllers = {
 
             res.status(200).json(userIncome);
         } catch (err) {
-            console.log(err);
+            console.error(err);
             res.status(500).json({ message: 'Server Error' });
         }
     },
@@ -89,7 +89,8 @@ const incomeControllers = {
         }
     },
 
-    //Update existing expense
+    // ✅ Update existing income
+    // PUT http://localhost:5002/api/income/:id
     updateIncome: async (req, res) => {
         const { id } = req.params;
         const { amount, source, date, description } = req.body;
@@ -99,16 +100,17 @@ const incomeControllers = {
                     { _id: id },
                     { amount, source, date, description }
                 );
+
                 if (updatedIncome.modifiedCount > 0) {
                     res.status(200).json({ message: 'Income updated successfully' });
                 } else {
                     res.status(404).json({ message: 'Income not found' });
                 }
             } else {
-                res.status(400).json({ message: "All fields are required" });
+                res.status(400).json({ message: 'All fields are required' });
             }
         } catch (err) {
-            console.log(err);
+            console.error(err);
             res.status(500).json({ message: err.message });
         }
     },
@@ -125,7 +127,7 @@ const incomeControllers = {
                 res.status(404).json({ message: 'Income not found' });
             }
         } catch (err) {
-            console.log(err);
+            console.error(err);
             res.status(500).json({ message: 'Server Error' });
         }
     },

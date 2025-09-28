@@ -32,17 +32,15 @@ connectToDB();
 const app = express();
 
 // cors allow the server to accept request from different origin
-// const allowedOrigins = process.env.CORS_ORIGINS
-//     : ['http://localhost:5173'];
+const allowedOrigins = process.env.CORS_ORIGINS
+    ? process.env.CORS_ORIGINS.split(',')
+    : ['http://localhost:5173'];
 
-app.use(
-    cors({
+app.use(cors({
         origin: "http://localhost:3000", // allow frontend
         methods: ["GET", "POST", "DELETE", "PUT"],
         credentials: true
-
-    })
-);
+    }));
 
 // parses
 app.use(express.json());

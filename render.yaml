@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: Expense_Tracker_Backend   # 👈 change this to your service name
+    env: node
+    plan: free                 # or starter/professional depending on your plan
+    buildCommand: |
+      npm install
+    startCommand: |
+      node index.js        # 👈 change to your actual entry file (e.g. server.js)
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false   # set this securely in Render dashboard under Environment
