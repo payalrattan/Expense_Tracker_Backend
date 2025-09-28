@@ -3,6 +3,7 @@ import Expense from '../models/expense.js';
 const expenseControllers = {
     // Get all expenses 
     //http://localhost:5002/api/expenses
+
     getAllExpenses: async (req, res) => {
         try {
             const expense = await Expense.find();
@@ -52,7 +53,7 @@ const expenseControllers = {
         const { category } = req.params;
         try {
 
-            const expenses = await Expense.find({ category });
+            const expenses = await Expense.find({ userId: id,category });
             if (!expenses || expenses.length === 0) {
                 return res.status(404).json({ message: "No expenses found for this category" });
             }

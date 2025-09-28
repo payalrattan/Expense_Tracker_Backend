@@ -1,15 +1,15 @@
 import Income from '../models/income.js';
 
 const incomeControllers = {
+
     // Get all income records
     //http://localhost:5002/api/income/
-    
+
     getAllIncome: async (req, res) => {
         try {
             const income = await Income.find();
             res.status(200).json(income);
         } catch (err) {
-            console.log(err);
             res.status(500).json({ message: 'Server Error' });
         }
     },
@@ -52,35 +52,37 @@ const incomeControllers = {
     // Get income by source
     //http://localhost:5002/api/income/source/Salary
 
-    getIncomeBySource: async (req, res) => {
-        const { source } = req.params;
+    getUserIncomeBySource: async (req, res) => {
+        const { id, source } = req.params; // id = userId
         try {
-            const incomes = await Income.find({ source: source });
+            const incomes = await Income.find({ userId: id, source: source });
             res.status(200).json(incomes);
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: err.message });
         }
     },
+
     // Create a new income record
     //http://localhost:5002/api/income
+
     createIncome: async (req, res) => {
         const { amount, source, date, description, userId } = req.body;
         try {
-            if (amount && source && description && userId) {
-                const newIncome = new Income({
-                    amount,
-                    source,
-                    description,
-                    userId,
-                    ...(date && { date })
-                });
-
-                await newIncome.save();
-                res.status(201).json(newIncome);
-            } else {
-                res.status(400).json({ message: 'All fields are required' });
+            if (!amount || !source || !userId) {
+                return res.status(400).json({ message: "Amount, source, and userId are required" });
             }
+
+            const newIncome = new Income({
+                amount,
+                source,
+                description: description || "",
+                userId,
+                ...(date && { date }),
+            });
+
+            await newIncome.save();
+            res.status(201).json(newIncome);
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: err.message });
@@ -126,7 +128,23 @@ const incomeControllers = {
             console.log(err);
             res.status(500).json({ message: 'Server Error' });
         }
+    },
+  
+getUserIncome: async (req, res) => {
+    const { id } = req.params; // userId
+    try {
+        const userIncome = await Income.find({ userId: id });
+        console.log("Backend: userIncome for", id, userIncome); // Debug log
+        if (!userIncome || userIncome.length === 0) {
+            return res.status(404).json({ message: "No income found for this user" });
+        }
+        res.status(200).json(userIncome);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'Server Error' });
     }
+},
+
 };
 
 export default incomeControllers;

@@ -6,15 +6,18 @@ const {
   getAllIncome,
   getIncomeById,
   getUserIncome,
-  getIncomeBySource,
+  getUserIncomeBySource,
   createIncome,
   updateIncome,
   deleteIncome
 } = incomeControllers;
+// Put user-specific routes FIRST
+router.get('/income/user/:id/source/:source', getUserIncomeBySource);
+router.get('/income/user/:id', getUserIncome);
+
+// Then the generic routes
 router.get('/income', getAllIncome);
 router.get('/income/:id', getIncomeById);
-router.get('/income/user/:id', getUserIncome);
-router.get('/income/source/:source', getIncomeBySource);
 router.post('/income', createIncome);
 router.put('/income/:id', updateIncome);
 router.delete('/income/:id', deleteIncome);

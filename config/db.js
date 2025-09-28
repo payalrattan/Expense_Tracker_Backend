@@ -12,7 +12,7 @@ dotenv.config({ path: path.join(PATH, '..', '.env') });
 
 const connectToDB = async () => {
     try {
-        await mongoose.connect(process.env.CONNECTION_URI);
+        await mongoose.connect(process.env.ATLAS_URL);
         console.log('Connected to the database successfully');
     } catch (err) {
         console.error(err);
