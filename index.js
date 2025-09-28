@@ -46,24 +46,24 @@ const app = express();
 
 
 const allowedOrigins = [
-    "http://localhost:5173", // or 3000 if using React dev server
-    "http://localhost:3000",
-    "https://your-frontend-service.onrender.com" // your deployed frontend URL
+  "http://localhost:5173", // or 3000 if using React dev server
+  "http://localhost:3000",
+  "https://your-frontend-service.onrender.com" // your deployed frontend URL
 ];
 
 app.use(
-    cors({
-        origin: function (origin, callback) {
-            if (!origin) return callback(null, true); // allow non-browser tools like Postman
-            if (allowedOrigins.includes(origin)) {
-                callback(null, true);
-            } else {
-                callback(new Error("Not allowed by CORS"));
-            }
-        },
-        credentials: true, // allow cookies to be sent
-        methods: ["GET", "POST", "PUT", "DELETE"],
-    })
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true); // allow non-browser tools like Postman
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true, // allow cookies to be sent
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
 );
 
 // parses
