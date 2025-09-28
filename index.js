@@ -32,16 +32,37 @@ connectToDB();
 const app = express();
 
 // cors allow the server to accept request from different origin
-const allowedOrigins = process.env.CORS_ORIGINS
-    ? process.env.CORS_ORIGINS.split(',')
-    : ['http://localhost:5173'];
+// const allowedOrigins = process.env.CORS_ORIGINS
+//     ? process.env.CORS_ORIGINS.split(',')
+//     : ['http://localhost:5173'];
+
+// app.use(
+//     cors({
+//         origin: "http://localhost:3000", // allow frontend
+//         methods: ["GET", "POST", "DELETE", "PUT"],
+//         credentials: true,
+//     })
+// );
+
+
+const allowedOrigins = [
+  "http://localhost:5173", // or 3000 if using React dev server
+  "http://localhost:3000",
+  "https://your-frontend-service.onrender.com" // your deployed frontend URL
+];
 
 app.use(
-    cors({
-        origin: "http://localhost:3000", // allow frontend
-        methods: ["GET", "POST", "DELETE", "PUT"],
-        credentials: true,
-    })
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true); // allow non-browser clients (like Postman)
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
 );
 
 // parses
