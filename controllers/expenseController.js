@@ -45,18 +45,6 @@ const expenseControllers = {
             res.status(500).json({ message: 'Server error ' });
         }
     },
-    // Get total expenses of a user
-    //http://localhost:5002/api/expenses/user/68c32d541328635110e809ac/total
-    getUserTotalExpenses: async (req, res) => {
-        const { id } = req.params;
-        try {
-            const totalExpenses = await calculateTotalExpenses(id);
-            res.status(200).json({ userId: id, totalExpenses });
-        } catch (err) {
-            console.log(err);
-            res.status(500).json({ message: 'Server Error' });
-        }
-    },
 
     // Get expenses by category
     //http://localhost:5002/api/expenses/category/Food
@@ -65,19 +53,15 @@ const expenseControllers = {
         try {
 
             const expenses = await Expense.find({ category });
-
-
             if (!expenses || expenses.length === 0) {
                 return res.status(404).json({ message: "No expenses found for this category" });
             }
-
             res.status(200).json(expenses);
         } catch (err) {
             console.log(err);
             res.status(500).json({ message: "Server Error" });
         }
     },
-
 
     // Create a new expense
     //http://localhost:5002/api/expenses
@@ -103,7 +87,7 @@ const expenseControllers = {
             res.status(500).json({ message: err.message });
         }
     },
-    
+
     //Update existing expense
     //http://localhost:5002/api/expenses/68c5a918d86c2710e269cf55
     updateExpense: async (req, res) => {
@@ -148,14 +132,3 @@ const expenseControllers = {
 };
 
 export default expenseControllers;
-// Function to calculate total expenses of a user
-export const calculateTotalExpenses = async (userId) => {
-    // Find all expenses for the given user
-    const expenses = await Expense.find({ userId });
-    let total = 0;
-    // Sum up the amount of each expense
-    expenses.forEach(expense => {
-        total += expense.amount;
-    });
-    return total; 
-};

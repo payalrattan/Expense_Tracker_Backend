@@ -16,7 +16,7 @@ import logger from './middleware/logger.js';
 import userRoutes from './routes/user.js';
 import incomeRoutes from './routes/income.js';
 import expenseRoutes from './routes/expense.js';
-import balanceRoutes from './routes/balance.js';
+
 // load environment variables
 dotenv.config();
 const PORT = process.env.PORT || 5003;
@@ -38,7 +38,7 @@ const app = express();
 app.use(
     cors({
         origin: "http://localhost:3000", // allow frontend
-        methods: ["GET", "POST"],
+        methods: ["GET", "POST", "DELETE", "PUT"],
         credentials: true
 
     })
@@ -63,7 +63,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/api', userRoutes);
 app.use('/api', incomeRoutes);
 app.use('/api', expenseRoutes);
-app.use('/api', balanceRoutes);
+
 
 
 if (process.env.NODE_ENV === 'production') {
