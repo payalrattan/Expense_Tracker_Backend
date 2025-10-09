@@ -7,8 +7,6 @@ router.get('/expenses/category/:category', getExpensesByCategory);
 router.get('/expenses/user/:id', getUserExpenses);
 router.get('/expenses', getAllExpenses);
 router.get('/expenses/:id', getExpenseById);
-
-
 router.post('/expenses', createExpense);
 router.put('/expenses/:id', updateExpense);
 router.delete('/expenses/:id', deleteExpense);
